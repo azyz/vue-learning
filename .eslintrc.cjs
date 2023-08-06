@@ -33,4 +33,9 @@ module.exports = {
     //     添加未定义变量错误提示：create-vue@3.6.3 关闭，这里加上是为了后面演示
     'no-undef': 'error'
   }
+  // globals:{
+  //   ElMessage:'readonly',
+  //   ElMessageBox: 'readonly',
+  //   ElLoading: ''
+  // }
 }

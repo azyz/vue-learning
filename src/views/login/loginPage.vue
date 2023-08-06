@@ -1,7 +1,37 @@
 <script setup>
+import { useUserStore } from '@/stores/pinia.js'
+import 'element-plus/theme-chalk/el-message.css' //element-plus引入message样式丢失，重新按需引入
+import { userRegisterService, userLoginService } from '@/api/user.js'
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { ref, watch } from 'vue'
 
+const isRegister = ref(true)
+const form = ref()
+const userStore = useUserStore()
+
+//监听，切换表单时重置信息
+watch(isRegister, () => {
+  formModel.value = {
+    username: '',
+    password: '',
+    repassword: ''
+  }
+})
+//注册校验
+const register = async () => {
+  await form.value.validate() //触发校验
+  await userRegisterService(formModel.value)
+  ElMessage.success('注册成功!')
+  isRegister.value = false
+}
+//登录校验
+const login = async () => {
+  await form.value.validate()
+  const res = await userLoginService(formModel.value)
+  userStore.setToken(res.data.token)
+  ElMessage.success('登录成功!')
+}
 //整个的用于提交的form数据对象
 const formModel = ref({
   username: '',
@@ -22,7 +52,7 @@ const formModel = ref({
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 10, message: '用户名必须是3-10位的字符', trigger: 'blur' }
+    { min: 2, max: 10, message: '用户名必须是2-10位的字符', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -52,7 +82,6 @@ const rules = {
     }
   ]
 }
-const isRegister = ref(true)
 </script>
 <template>
   <el-row class="login-page">
@@ -99,7 +128,62 @@ const isRegister = ref(true)
           ></el-input>
         </el-form-item>
         <el-form-item>
+          <el-button
+            @click="register"
+            class="button"
+            type="primary"
+            auto-insert-space
+            >注册</el-button
+          >
+        </el-form-item>
+        <el-form-item class="flex">
+          <el-link type="info" :underline="false" @click="isRegister = false"
+            ><el-icon><Back /></el-icon>返回</el-link
+          >
+        </el-form-item>
+      </el-form>
+      <!-- 登录表单 -->
+      <el-form
+        :model="formModel"
+        :rules="rules"
+        ref="form"
+        size="large"
+        autocomplete="off"
+        v-else
+      >
+        <el-form-item><h1>登录</h1></el-form-item>
+        <el-form-item prop="username">
+          <el-input
+            v-model="formModel.username"
+            :prefix-icon="User"
+            placeholder="请输入用户名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="formModel.password"
+            :prefix-icon="Lock"
+            placeholder="请输入密码"
+            type="password"
+          ></el-input>
+        </el-form-item>
+        <el-form-item class="flex">
           <el-checkbox v-model="checked1" label="记住我" size="small" />
+          <el-link type="primary" :underline="false">忘记密码？</el-link>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            @click="login"
+            class="button"
+            type="primary"
+            auto-insert-space
+            >登录</el-button
+          >
+        </el-form-item>
+        <el-form-item class="flex">
+          <el-link type="info" :underline="false" @click="isRegister = true"
+            >注册 <el-icon><Right /></el-icon>
+          </el-link>
         </el-form-item>
       </el-form>
     </el-col>
