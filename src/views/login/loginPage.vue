@@ -1,14 +1,16 @@
 <script setup>
-import { useUserStore } from '@/stores/pinia.js'
 import 'element-plus/theme-chalk/el-message.css' //element-plus引入message样式丢失，重新按需引入
 import { userRegisterService, userLoginService } from '@/api/user.js'
 import { User, Lock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ref, watch } from 'vue'
+import { useUserStore } from '@/stores'
+import { useRouter } from 'vue-router'
 
 const isRegister = ref(true)
 const form = ref()
 const userStore = useUserStore()
+const router = useRouter()
 
 //监听，切换表单时重置信息
 watch(isRegister, () => {
@@ -30,7 +32,8 @@ const login = async () => {
   await form.value.validate()
   const res = await userLoginService(formModel.value)
   userStore.setToken(res.data.token)
-  ElMessage.success('登录成功!')
+  ElMessage.success('登录成功！')
+  router.push('/')
 }
 //整个的用于提交的form数据对象
 const formModel = ref({

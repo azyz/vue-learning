@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useUserStroe } from '../stores/pinia'
+import { useUserStore } from '../stores/index'
 import { ElMessage } from 'element-plus'
 import router from '../router'
 
@@ -15,7 +15,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
-    const userStore = useUserStroe()
+    const userStore = useUserStore()
     //如果token存在，需要让请求头去携带
     if (userStore.token) {
       config.headers.Authorization = userStore.token
