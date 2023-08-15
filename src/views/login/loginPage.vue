@@ -1,13 +1,13 @@
 <script setup>
 import 'element-plus/theme-chalk/el-message.css' //element-plus引入message样式丢失，重新按需引入
 import { userRegisterService, userLoginService } from '@/api/user.js'
-import { User, Lock } from '@element-plus/icons-vue'
+import { User, Lock, Right, Back } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ref, watch } from 'vue'
 import { useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
-const isRegister = ref(true)
+const isRegister = ref(false)
 const form = ref()
 const userStore = useUserStore()
 const router = useRouter()
@@ -141,7 +141,7 @@ const rules = {
         </el-form-item>
         <el-form-item class="flex">
           <el-link type="info" :underline="false" @click="isRegister = false"
-            ><el-icon><Back /></el-icon>返回</el-link
+            ><el-icon><Back /></el-icon><span>返回</span></el-link
           >
         </el-form-item>
       </el-form>
@@ -171,7 +171,7 @@ const rules = {
           ></el-input>
         </el-form-item>
         <el-form-item class="flex">
-          <el-checkbox v-model="checked1" label="记住我" size="small" />
+          <el-checkbox class="flex1" v-model="checked1" label="记住我" size="middle" />
           <el-link type="primary" :underline="false">忘记密码？</el-link>
         </el-form-item>
         <el-form-item>
@@ -185,10 +185,35 @@ const rules = {
         </el-form-item>
         <el-form-item class="flex">
           <el-link type="info" :underline="false" @click="isRegister = true"
-            >注册 <el-icon><Right /></el-icon>
+            ><span>注册</span> <el-icon><Right /></el-icon>
           </el-link>
         </el-form-item>
       </el-form>
     </el-col>
   </el-row>
 </template>
+<style lang="scss" scoped>
+.login-page {
+  .form {
+    display: flex;
+    // margin: 100px auto;
+    flex-direction: column;
+    justify-content: center;
+    user-select: none;
+    .title {
+      margin: 0 auto;
+    }
+    .button {
+      width: 100%;
+    }
+    .flex {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      .flex1 {
+        margin-right: auto;
+      }
+    }
+  }
+}
+</style>
