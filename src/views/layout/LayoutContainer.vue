@@ -85,7 +85,7 @@ onMounted(() => {
     <el-container>
       <el-header>
         <div>
-          用户:<strong>{{ userStore.user.username }}</strong>
+          用户:<strong>{{ userStore.user.nickname }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">

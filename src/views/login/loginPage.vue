@@ -171,7 +171,12 @@ const rules = {
           ></el-input>
         </el-form-item>
         <el-form-item class="flex">
-          <el-checkbox class="flex1" v-model="checked1" label="记住我" size="middle" />
+          <el-checkbox
+            class="flex1"
+            v-model="checked1"
+            label="记住我"
+            size="middle"
+          />
           <el-link type="primary" :underline="false">忘记密码？</el-link>
         </el-form-item>
         <el-form-item>
